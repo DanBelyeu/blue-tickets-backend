@@ -18,16 +18,19 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-app.get('/ticketCount/:name', (req, res) => {
-    const name = req.params.name;
-    res.send(data.getTicketCount(name).toString());
+app.get('/ticketCount/:name', async (req, res) => {
+    data.getTicketCount(req.params.name)
+    .then(count => count.toString())
+    .then(count => res.send(count))
   });
 
 app.post('/update', (req, res) => {
     const { name } = req.body;
-    data.incrementTicketCount(name);
-    res.send(data.getTicketCount(name).toString());
-})
+    data.incrementTicketCount(name)
+    .then(() => data.getTicketCount(name))
+    .then(count => count.toString())
+    .then(count => res.send(count))
+});
 
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
