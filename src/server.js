@@ -25,16 +25,29 @@ app.get('/ticketCount/:name', async (req, res) => {
   });
 
 app.post('/update', (req, res) => {
-    const { name } = req.body;
-    data.incrementTicketCount(name)
-    .then(() => data.getTicketCount(name))
-    .then(count => count.toString())
-    .then(count => res.send(count))
+    const { name, isIncrement } = req.body;
+    
+    if (isIncrement) {
+      data.incrementTicketCount(name)
+      .then(() => data.getTicketCount(name))
+      .then(count => count.toString())
+      .then(count => res.send(count))
+    } else {
+      data.decrementTicketCount(name)
+      .then(() => data.getTicketCount(name))
+      .then(count => count.toString())
+      .then(count => res.send(count))
+    }
 });
 
 app.get('/getItems', async (req, res) => {
   data.lookupItems()
   .then(items => res.send(items));
+})
+
+app.post('/addItem', (req, res) => {
+  const { name, description, cost, image } = req.body;
+  data.addItem(name, description, cost, image);
 })
 
 app.listen(port, () => {
