@@ -9,4 +9,9 @@ const incrementTicketCount = async (name) => {
     await db.query('update ticket_counts set count = count + 1 where child = $1', [name]);
 }
 
-module.exports = { getTicketCount, incrementTicketCount };
+const lookupItems = async () => {
+    const result = await db.query('select * from items where status', []);
+    return result.rows;
+}
+
+module.exports = { getTicketCount, incrementTicketCount, lookupItems };

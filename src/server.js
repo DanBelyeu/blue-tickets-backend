@@ -32,6 +32,11 @@ app.post('/update', (req, res) => {
     .then(count => res.send(count))
 });
 
+app.get('/getItems', async (req, res) => {
+  data.lookupItems()
+  .then(items => res.send(items));
+})
+
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
